@@ -96,3 +96,9 @@
 	color: white;
 	margin: 10px;
 }
+.userTable table, th, td{
+	 
+	border: 1px solid;
+	/* column-width: 50px; */
+  
+}

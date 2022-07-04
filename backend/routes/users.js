@@ -108,30 +108,39 @@ router.get("/:id/verify/:token/", async (req, res) => {
 
 //get all users from DB
 router.get("/getUser", async (req, res) => {
-    const user = await User.find();
-    res.status(200).send({ data: user, message: "Data fetched!" });
+
+    try {
+        
+        const user = await User.find();
+        res.status(200).send({ data: user, message: "Data fetched!" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal Server Error" });
+    }
 });
 
 //add New note
 router.post("/addNote", async (req, res) => {
-    console.log("req fom add note backend : ", req.body)
+    // console.log("req fom add note backend : ", req.body)
     try {
-        // const { error } = validate(req.body);
-        // if (error)
-        //     return res.status(400).send({ message: error.details[0].message });
-
-        // let user = await User.findOne({ email: req.body.email });
-        // let user = await Notes.find();
         let user = await new Notes({ ...req.body}).save();
-
-        // console.log("generated password : ", user.password);
-    
-        // const url = `${process.env.BASE_URL}users/${user.id}/verify/${token.token}`;
-        // await sendEmail(user.email, "Verify Email", url, req.body.password);
         res.status(200).send({ data: user, message: "Note added successfully!" });
 
-        // res.status(201).send({ message: "An Email sent to your account please verify" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal Server Error" });
+    }
+});
 
+//get all notes from DB
+router.get("/getNotes", async (req, res) => {
+    // console.log("req fom get note backend : ", req.query)
+
+    try {
+        const note = await Notes.find({ email: req.query.email });
+        res.status(200).send({ data: note, message: "Notes fetched!" });
+
+        
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: "Internal Server Error" });
