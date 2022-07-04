@@ -4,8 +4,9 @@ import axios from "axios";
 
 const Notes = () => {
     
-	const [data, setData] = useState({ email: "", password: "" });
+	const [data, setData] = useState({ email: localStorage.getItem("email")});
 	const [error, setError] = useState("");
+    const [msg, setMsg] = useState("");
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -22,9 +23,12 @@ const Notes = () => {
         e.preventDefault();
         try {
             console.log("handleAddNote works! : ",data)
-            // const url = "http://localhost:8080/api/users/addNote";
-            // const { data: res } = await axios.post(url, data);
-        // console.log("res1 : ", res);
+            const url = "http://localhost:8080/api/users/addNote";
+            const { data: res } = await axios.post(url, data);
+        console.log("res : ", data);
+        setMsg(res.message);
+        window.location.reload();
+        // console.log("res : ", data);
 
         } catch (error) {
             if (
@@ -44,10 +48,13 @@ const Notes = () => {
 			</nav>
             <form onSubmit={handleAddNote}>
 
-            <input type="text" placeholder="Add title" onChange={handleChange} value={data.title} />
+            <input type="text" name="title" placeholder="Add title" onChange={handleChange} value={data.title} />
             <br /><br />
             <textarea name="description" id="description" cols="30" rows="10" placeholder="Insert new note" onChange={handleChange} value={data.description}></textarea>
             <br /><br />
+            {msg && <div className={styles.success_msg}>{msg}</div>}
+            {error && <div className={styles.error_msg}>{error}</div>}
+
             <button type="submit">Add Note</button>
             </form>
 		</div>

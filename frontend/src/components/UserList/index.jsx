@@ -1,12 +1,11 @@
 import styles from "../Main/styles.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 const UserList = () => {
     const [error, setError] = useState("");
     const [data, setData] = useState([]);
 
-    let userDetails;
     const handleLogout = () => {
         localStorage.removeItem("token");
         window.location = "/";
@@ -45,28 +44,27 @@ const UserList = () => {
                     Logout
                 </button>
             </nav>
+            {error && <div className={styles.error_msg}>{error}</div>}
             <button onClick={handlePreview} className={styles.green_btn}>Preview User Data</button>
             <table className={styles.userTable}>
-        <thread >
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Mobile</th>
-                    <th>Birtdate</th>
-                </tr>
-        </thread>
-            <tbody >
-                {data.map((item) => (
-                <tr>
-                    <td>{item.firstName}</td>
-                    <td>{item.lastName}</td>
-                    <td>{item.mobile}</td>
-                    <td>{item.dob}</td>
-                    
-                </tr>
-                    
-                ))}
-            </tbody>     
+                <thread >
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Mobile</th>
+                        <th>Birtdate</th>
+                    </tr>
+                </thread>
+                <tbody >
+                    {data.map((item) => (
+                        <tr>
+                            <td>{item.firstName}</td>
+                            <td>{item.lastName}</td>
+                            <td>{item.mobile}</td>
+                            <td>{item.dob}</td>
+                        </tr>
+                    ))}
+                </tbody>
             </table>
         </div>
     );
