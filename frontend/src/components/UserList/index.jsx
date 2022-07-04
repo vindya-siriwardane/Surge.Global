@@ -18,8 +18,6 @@ const UserList = () => {
             const params = {
                 email: email
             };
-            // console.log("let params : ", params)
-
             const urlReg = "http://localhost:8080/api/users/getUser"
             const { data: res1 } = await axios.get(urlReg, { params });
             setData(res1.data);
@@ -33,7 +31,6 @@ const UserList = () => {
                 setError(error.response.data.message);
             }
         }
-
     };
 
     return (

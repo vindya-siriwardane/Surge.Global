@@ -18,12 +18,10 @@ module.exports = async (email, subject, text, password) => {
 			to: email,
 			subject: subject,
 			text: "Please click link below to verify your account. \n" + text + "\nPlease use below credintials to login to your account. \n Email :"+ email +"\n Password : " + password,
-			// password : "Please use one time password below to login to your account. \n" + password
 		});
 		console.log("email sent successfully");
 	} catch (error) {
 		console.log("email not sent!");
-		console.log(error);
 		return error;
 	}
 };

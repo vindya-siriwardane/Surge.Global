@@ -2,9 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
-import { trackPromise } from 'react-promise-tracker';
-import {BounceLoader} from 'react-spinners';
-
+import { BounceLoader } from 'react-spinners';
 
 const Signup = () => {
 
@@ -21,8 +19,7 @@ const Signup = () => {
 		setData({ ...data, [input.name]: input.value });
 	};
 
-
-	const handleSubmit = async (e) =>  {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			setSpinner(true)
@@ -67,7 +64,7 @@ const Signup = () => {
 						/>
 						{error && <div className={styles.error_msg}>{error}</div>}
 						{msg && <div className={styles.success_msg}>{msg}</div>}
-						<BounceLoader loading = {loadingSpinner}/>
+						<BounceLoader loading={loadingSpinner} />
 						<button type="submit" className={styles.green_btn}>
 							Sign Up
 						</button>

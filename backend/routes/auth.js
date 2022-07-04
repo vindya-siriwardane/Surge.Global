@@ -8,7 +8,7 @@ const sendEmail = require("../utils/sendEmail");
 const jwt = require('jsonwebtoken');
 
 router.post("/", async (req, res) => {
-    
+
     try {
         const { error } = validate(req.body);
 
@@ -19,17 +19,10 @@ router.post("/", async (req, res) => {
         if (!user)
             return res.status(401).send({ message: "Invalid Email or Password" });
 
-            console.log("auth req.body.password :", req.body.password);
-            console.log("user typed user.password :", user.password);
-
         const validPassword = await bcrypt.compare(req.body.password, user.password);
-        // const validPassword = await req.body.password.localeCompare(user.password);
-
-        console.log("validPassword : ", validPassword);
 
         if (!validPassword)
             return res.status(401).send({ message: "Invalid Email or Password" });
-
 
         if (!user.verified) {
             let token = await Token.findOne({ userId: user._id });
@@ -41,19 +34,15 @@ router.post("/", async (req, res) => {
                 const url = `${process.env.BASE_URL}users/${user.id}/verify/${token.token}`;
                 await sendEmail(user.email, "Verify Email", url);
             }
-
             return res
                 .status(400)
                 .send({ message: "An Email sent to your account please verify" });
         }
 
         const token = user.generateAuthToken();
-        // const token = user.jwt;
-
         res.status(200).send({ data: token, message: "Logged in successfully!" });
 
     } catch (error) {
-        console.log("error---> ", error);
         res.status(500).send({ message: "Internal Server Error!" });
     }
 })

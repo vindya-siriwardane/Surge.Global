@@ -2,7 +2,7 @@ import styles from "./styles.module.css";
 import { useState } from "react";
 import axios from "axios";
 import React from 'react';
-import {BounceLoader} from 'react-spinners';
+import { BounceLoader } from 'react-spinners';
 
 
 const Register = () => {
@@ -29,16 +29,14 @@ const Register = () => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-      
+
 
         try {
             setSpinner(true)
             const url = "http://localhost:8080/api/users/register";
             const { data: res } = await axios.post(url, data);
-        console.log("res1 : ", res);
-        setSpinner(false)
-        // reactjsPopup.alert('I am alert, nice to meet you');
-             setMsg(res.message);
+            setSpinner(false)
+            setMsg(res.message);
             setButtonPopup(true);
             window.location = "/login"
 
@@ -59,24 +57,24 @@ const Register = () => {
             <div className={styles.register_form_container}>
                 <div className={styles.left}>
                     <h1>Welcome</h1>
-                   
+
                 </div>
                 <div className={styles.right}>
                     <form className={styles.form_container} onSubmit={handleUpdate}>
                         <h1>Register your infomartion</h1>
-                        <input type="text" placeholder='First Name' name="firstName"  value={data.firstName}  required className={styles.input} onChange={handleChange} />
-                        <input type="text" placeholder='Last Name' name="lastName" value={data.lastName}  required className={styles.input} onChange={handleChange} />
-                        <input type="text" placeholder='Date of Birth' name="dob"  value={data.dob} required className={styles.input} onChange={handleChange} />
-                        <input type="text" placeholder='Mobile' name="mobile" value={data.mobile}  required className={styles.input} onChange={handleChange} />
+                        <input type="text" placeholder='First Name' name="firstName" value={data.firstName} required className={styles.input} onChange={handleChange} />
+                        <input type="text" placeholder='Last Name' name="lastName" value={data.lastName} required className={styles.input} onChange={handleChange} />
+                        <input type="text" placeholder='Date of Birth' name="dob" value={data.dob} required className={styles.input} onChange={handleChange} />
+                        <input type="text" placeholder='Mobile' name="mobile" value={data.mobile} required className={styles.input} onChange={handleChange} />
                         {/* <input type="dro" placeholder='Account Type' name="type" required className={styles.input} /> */}
-                       
+
                         {/* <input type="email" placeholder='Email' name="email" required className={styles.input} /> */}
-                        <input type="password" placeholder='Reset Password' name="password" value={data.password}  required className={styles.input} onChange={handleChange} />
+                        <input type="password" placeholder='Reset Password' name="password" value={data.password} required className={styles.input} onChange={handleChange} />
                         {/* {error && <div className={styles.error_msg}>{error}</div>}
                 {msg && <div className={styles.success_msg}>{msg}</div>} */}
                         {error && <div className={styles.error_msg}>{error}</div>}
                         {msg && <div className={styles.success_msg}>{msg}</div>}
-						<BounceLoader loading = {loadingSpinner}/>
+                        <BounceLoader loading={loadingSpinner} />
 
                         <button type='submit' className={styles.green_btn}>Update</button>
 

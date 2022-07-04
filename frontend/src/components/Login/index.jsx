@@ -22,30 +22,19 @@ const Login = () => {
 			let email = data.email
 			const params = {
 				email: email
-				
 			};
-			// console.log("let params : ", params)
-			
 			const urlReg = "http://localhost:8080/api/users/getUser"
-			const { data: res1 } = await axios.get(urlReg, {params});
-			console.log("fetched user data status : ", res1.data.status);
+			const { data: res1 } = await axios.get(urlReg, { params });
 
-
-			if(res1.data.status === true){
-				if(res1.data.type === 'admin'){
+			if (res1.data.status === true) {
+				if (res1.data.type === 'admin') {
 					window.location = "/userList"; // go to admin user list page
 				}
-				else{
-
-					// const urlReg = "http://localhost:8080/api/users/getNotes"
-					// const { data: res2 } = await axios.get(urlReg, {params});
-					// console.log("fetched user data status : ", res2.data.status);
-
+				else {
 					window.location = "/myNotes"; // go to Student Notes page
 				}
 			}
-			else{
-				console.log("status : ", res1.data.status)
+			else {
 				window.location = "/"; //go to register page
 			}
 		} catch (error) {
