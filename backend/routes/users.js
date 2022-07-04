@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { User, validate, validateReg } = require("../models/user");
+const { User } = require("../models/user");
 const bcrypt = require("bcrypt");
 const Token = require("../models/token");
 const sendEmail = require("../utils/sendEmail");
@@ -152,5 +152,27 @@ router.delete("/deleteNote/:id", async (req, res) => {
         res.status(500).send({ message: "Internal Server Error" });
     }
 });
+
+const validate = (data) => {
+    const schema = Joi.object({
+        email : Joi.string().required().label("Email"),
+        password: passwordComplexity(complexityOptions).required(),
+    });
+    return schema.validate(data);
+};
+
+const validateReg = (data) => {
+    const schema = Joi.object({
+        firstName : Joi.string().required().label("First Name"),
+        lastName : Joi.string().required().label("Last Name"),
+        email : Joi.string().required().label("Email"),
+        password: passwordComplexity(complexityOptions).required(),
+        dob : Joi.string().label("Date of Birth"),
+        mobile : Joi.string().length(10).label("Mobile"),
+        type : Joi.string().label("Account Type"),
+        status : Joi.boolean().label("Status")
+    });
+    return schema.validate(data);
+};
 
 module.exports = router;
