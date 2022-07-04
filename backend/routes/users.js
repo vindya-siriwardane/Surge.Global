@@ -122,14 +122,30 @@ router.get("/getUser", async (req, res) => {
 //add New note
 router.post("/addNote", async (req, res) => {
     // console.log("req fom add note backend : ", req.body)
-    try {
-        let user = await new Notes({ ...req.body}).save();
-        res.status(200).send({ data: user, message: "Note added successfully!" });
+    if(!req.body._id){
+
+        try {
+            let user = await new Notes({ ...req.body}).save();
+            res.status(200).send({ data: user, message: "Note added successfully!" });
 
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: "Internal Server Error" });
     }
+}
+else{
+    console.log("need to update")
+    let note = await Notes.findOne({ _id: req.body._id });
+    if(note){
+        note.overwrite({
+            title: req.body.title,
+            description: req.body.description,
+            email:req.body.email
+        });
+        await note.save();
+        res.status(200).send({ data: note, message: "Note updated successfully!" });
+    }
+}
 });
 
 //get all notes from DB
@@ -138,6 +154,22 @@ router.get("/getNotes", async (req, res) => {
 
     try {
         const note = await Notes.find({ email: req.query.email });
+        res.status(200).send({ data: note, message: "Notes fetched!" });
+
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal Server Error" });
+    }
+});
+
+
+router.get("/getNote/:id", async (req, res) => {
+    console.log("req fom get note backend : ", req.params.id)
+
+    try {
+        const note = await Notes.findOne({ _id: req.params.id });
+        console.log("note : ", note)
         res.status(200).send({ data: note, message: "Notes fetched!" });
 
         

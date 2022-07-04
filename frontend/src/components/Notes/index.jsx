@@ -51,7 +51,7 @@ const Notes = () => {
     const handleAddNote = async (e) => {
         e.preventDefault();
         try {
-            console.log("handleAddNote works! : ", data)
+            // console.log("handleAddNote works! : ", data)
             const url = "http://localhost:8080/api/users/addNote";
             const { data: res } = await axios.post(url, data);
             console.log("res : ", data);
@@ -71,17 +71,27 @@ const Notes = () => {
 
     const handleDeleteNote = async (event, param) => {
         try {
-            // console.log(param)
             const url = `http://localhost:8080/api/users/deleteNote/${param}`;
             const { data } = await axios.delete(url);
-            // console.log("data from emailverfy get : ",data);
-            // setValidUrl(true);
             setMsg(data.message)
             window.location.reload();
 
         } catch (error) {
             console.log(error);
-            // setValidUrl(false);
+        }
+    };
+    const handleEditNote = async (event, param) => {
+        try {
+            const url = `http://localhost:8080/api/users/getNote/${param}`;
+            const { data: resGet } = await axios.get(url,'62c2f4fd77891d7646fc0e57');
+            setData(resGet.data)
+            console.log("resGet data : ", resGet.data);
+            // setMsg(data.message)
+            // window.location.reload();
+
+
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -98,7 +108,7 @@ const Notes = () => {
             <form onSubmit={handleAddNote}>
                 <button onClick={handleGetNote}>Load All Notes</button>
                 <br /><br />
-                <input type="text" name="title" placeholder="Add title" onChange={handleChange} value={data.title} />
+                <input type="text" name="title" placeholder="Add Title" onChange={handleChange} value={data.title} />
                 <br /><br />
                 <textarea name="description" id="description" cols="30" rows="10" placeholder="Insert new note" onChange={handleChange} value={data.description}></textarea>
                 <br /><br />
@@ -113,7 +123,7 @@ const Notes = () => {
                     <tr>
                         <th>Title</th>
                         <th>Description</th>
-                        {/* <th>Edit</th> */}
+                        <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                 </thread>
@@ -122,7 +132,7 @@ const Notes = () => {
                         <tr>
                             <td>{item.title}</td>
                             <td>{item.description}</td>
-                            {/* <td></td> */}
+                            <td><button onClick={event => handleEditNote(event, item._id)}>Edit</button></td>
                             <td><button onClick={event => handleDeleteNote(event, item._id)}>Delete</button></td>
                         </tr>
                     ))}
