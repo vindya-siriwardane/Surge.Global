@@ -67,6 +67,26 @@ const Notes = () => {
         }
     };
 
+    
+
+    const handleDeleteNote = async (event, param) => {
+        try {
+            // console.log(param)
+            const url = `http://localhost:8080/api/users/deleteNote/${param}`;
+            const { data } = await axios.delete(url);
+            // console.log("data from emailverfy get : ",data);
+            // setValidUrl(true);
+            setMsg(data.message)
+            window.location.reload();
+
+        } catch (error) {
+            console.log(error);
+            // setValidUrl(false);
+        }
+    };
+
+
+
     return (
         <div >
             <nav className={styles.navbar}>
@@ -103,7 +123,7 @@ const Notes = () => {
                             <td>{item.title}</td>
                             <td>{item.description}</td>
                             {/* <td></td> */}
-                            <td><button>Delete</button></td>
+                            <td><button onClick={event => handleDeleteNote(event, item._id)}>Delete</button></td>
                         </tr>
                     ))}
                 </tbody>

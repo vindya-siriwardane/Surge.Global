@@ -147,4 +147,17 @@ router.get("/getNotes", async (req, res) => {
     }
 });
 
+
+router.delete("/deleteNote/:id", async (req, res) => {
+    // console.log("del req : ", req)
+    try {
+         await Notes.deleteOne({ _id: req.params.id });
+
+        
+        res.status(200).send({ message: "Note Deleted successfully" });
+    } catch (error) {
+        res.status(500).send({ message: "Internal Server Error" });
+    }
+});
+
 module.exports = router;
