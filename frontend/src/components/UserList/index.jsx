@@ -46,33 +46,28 @@ const UserList = () => {
                 </button>
             </nav>
             <button onClick={handlePreview} className={styles.green_btn}>Preview User Data</button>
-            <table>
-        <thread>
-
+            <table className={styles.userTable}>
+        <thread >
                 <tr>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Mobile</th>
+                    <th>Birtdate</th>
                 </tr>
         </thread>
-            <tbody>
-
+            <tbody >
                 {data.map((item) => (
                 <tr>
                     <td>{item.firstName}</td>
                     <td>{item.lastName}</td>
                     <td>{item.mobile}</td>
+                    <td>{item.dob}</td>
                     
                 </tr>
                     
                 ))}
-            </tbody>
-            
-                
-                   
-               
+            </tbody>     
             </table>
-           
         </div>
     );
 };

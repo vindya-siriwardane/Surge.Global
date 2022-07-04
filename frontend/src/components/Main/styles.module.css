@@ -38,3 +38,9 @@
 	color: white;
 	margin-top: 20px;
 }
+.userTable table, th, td{
+	 
+		border: 1px solid;
+		/* column-width: 50px; */
+	  
+}
