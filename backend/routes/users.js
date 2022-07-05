@@ -100,11 +100,9 @@ router.get("/getUser", async (req, res) => {
 
 //get user by :email
 router.get("/getUserById/:email", async (req, res) => {
-    console.log("req : ", req.params.email);
     try {
         const user = await User.findOne({email : req.params.email});
         res.status(200).send({ data: user, message: "Data fetched!" });
-        console.log("res : ",user );
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: "Internal Server Error" });
