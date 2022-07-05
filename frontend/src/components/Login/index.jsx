@@ -23,9 +23,9 @@ const Login = () => {
 			const params = {
 				email: email
 			};
-			const urlReg = "http://localhost:8080/api/users/getUser"
-			const { data: res1 } = await axios.get(urlReg, { params });
-
+			const urlReg = `http://localhost:8080/api/users/getUserById/${params.email}`
+			const { data: res1 } = await axios.get(urlReg);
+			console.log("response : ",res1.data);
 			if (res1.data.status === true) {
 				if (res1.data.type === 'admin') {
 					window.location = "/userList"; // go to admin user list page

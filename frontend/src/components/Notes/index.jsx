@@ -1,6 +1,8 @@
 import styles from "./styles.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import Pagination from '@material-ui/lab/Pagination';
+import ReactPaginate from 'react-paginate';
 
 const Notes = () => {
 
@@ -8,6 +10,24 @@ const Notes = () => {
     const [error, setError] = useState("");
     const [msg, setMsg] = useState("");
     const [notes, setNotes] = useState([]);
+    const [currentItems, setCurrentItems] = useState([]);
+    const [pageCount, setPageCount] = useState(0);
+    const [itemOffset, setItemOffset] = useState(0);
+    const itemsPerPage = 5;
+    const [trigger, setTrigger] = useState(0)
+
+    useEffect(() => {
+        setTrigger(101);
+        const endOffset = itemOffset + itemsPerPage;
+        setCurrentItems(notes.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(notes.length / itemsPerPage));
+    }, [itemOffset, itemsPerPage]);
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % notes.length;
+
+        setItemOffset(newOffset);
+    };
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -27,7 +47,10 @@ const Notes = () => {
             };
             const urlReg = "http://localhost:8080/api/users/getNotes"
             const { data: res2 } = await axios.get(urlReg, { params });
-            setNotes(res2.data);
+            setCurrentItems(res2.data);
+            setNotes(res2.data)
+            setTrigger(trigger + 1);
+
         } catch (error) {
             if (
                 error.response && error.response.status >= 400 && error.response.status <= 500) {
@@ -104,7 +127,7 @@ const Notes = () => {
                     </tr>
                 </thread>
                 <tbody >
-                    {notes.map((item) => (
+                    {currentItems.map((item) => (
                         <tr>
                             <td>{item.title}</td>
                             <td>{item.description}</td>
@@ -112,8 +135,22 @@ const Notes = () => {
                             <td><button onClick={event => handleDeleteNote(event, item._id)}>Delete</button></td>
                         </tr>
                     ))}
+                    <Pagination count={notes.length} />
+
                 </tbody>
             </table>
+
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel="next >"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLabel="< previous"
+                renderOnZeroPageCount={null}
+            />
+
+
         </div>
     );
 };

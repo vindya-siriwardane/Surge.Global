@@ -7,7 +7,6 @@ import { BounceLoader } from 'react-spinners';
 
 const Register = () => {
 
-    const [buttonPopup, setButtonPopup] = useState(false)
     const [loadingSpinner, setSpinner] = useState(false)
 
     const [data, setData] = useState({
@@ -37,7 +36,6 @@ const Register = () => {
             const { data: res } = await axios.post(url, data);
             setSpinner(false)
             setMsg(res.message);
-            setButtonPopup(true);
             window.location = "/login"
 
         } catch (error) {
@@ -66,21 +64,11 @@ const Register = () => {
                         <input type="text" placeholder='Last Name' name="lastName" value={data.lastName} required className={styles.input} onChange={handleChange} />
                         <input type="text" placeholder='Date of Birth' name="dob" value={data.dob} required className={styles.input} onChange={handleChange} />
                         <input type="text" placeholder='Mobile' name="mobile" value={data.mobile} required className={styles.input} onChange={handleChange} />
-                        {/* <input type="dro" placeholder='Account Type' name="type" required className={styles.input} /> */}
-
-                        {/* <input type="email" placeholder='Email' name="email" required className={styles.input} /> */}
                         <input type="password" placeholder='Reset Password' name="password" value={data.password} required className={styles.input} onChange={handleChange} />
-                        {/* {error && <div className={styles.error_msg}>{error}</div>}
-                {msg && <div className={styles.success_msg}>{msg}</div>} */}
                         {error && <div className={styles.error_msg}>{error}</div>}
                         {msg && <div className={styles.success_msg}>{msg}</div>}
                         <BounceLoader loading={loadingSpinner} />
-
                         <button type='submit' className={styles.green_btn}>Update</button>
-
-                        {/* <Popup trigger={buttonPopup}>
-                            <h1>kmkmdkccccccccccccccccccccccccccccccccccccccccccccc</h1>
-                        </Popup> */}
                     </form>
                 </div>
             </div>

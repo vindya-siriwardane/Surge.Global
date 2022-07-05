@@ -5,6 +5,9 @@ const Token = require("../models/token");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const { Notes } = require("../models/notes");
+const Joi = require("joi");
+const passwordComplexity = require("joi-password-complexity");
+
 
 // signup users
 router.post("/", async (req, res) => {
@@ -74,7 +77,7 @@ router.get("/:id/verify/:token/", async (req, res) => {
             token: req.params.token,
         });
         if (!token) return res.status(400).send({ message: "Invalid link" });
-        await User.updateOne({ _id: user._id, verified: true });
+        await User.updateOne({ _id: user._id}, {$set: { verified: true}});
         await token.remove();
         res.status(200).send({ message: "Email verified successfully" });
 
@@ -88,11 +91,26 @@ router.get("/getUser", async (req, res) => {
     try {
         const user = await User.find();
         res.status(200).send({ data: user, message: "Data fetched!" });
+        console.log("res : ",user );
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: "Internal Server Error" });
     }
 });
+
+//get user by :email
+router.get("/getUserById/:email", async (req, res) => {
+    console.log("req : ", req.params.email);
+    try {
+        const user = await User.findOne({email : req.params.email});
+        res.status(200).send({ data: user, message: "Data fetched!" });
+        console.log("res : ",user );
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ message: "Internal Server Error" });
+    }
+});
+
 
 //add New note
 router.post("/addNote", async (req, res) => {
@@ -152,6 +170,12 @@ router.delete("/deleteNote/:id", async (req, res) => {
         res.status(500).send({ message: "Internal Server Error" });
     }
 });
+const complexityOptions = {
+    min: 8,
+    max: 12,
+    // numeric: 1,
+    requirementCount: 2,
+  };
 
 const validate = (data) => {
     const schema = Joi.object({
